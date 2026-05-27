@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import AuthGuard from "./Authguard";
+import AuthGuard from "./AuthGuard";
 import PublicGuard from "./Publicguard";
 
 import AuthLayout from "../Layouts/AuthLayout";
