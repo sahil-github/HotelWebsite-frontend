@@ -12,7 +12,7 @@ import d4 from "../assets/d4.jpg"
 import f1 from "../assets/f1.jpg"
 import f2 from "../assets/f2.jpg"
 import f3 from "../assets/f3.jpg"
-import f4 from "../assets/f4.jpg"
+import f4 from "../assets/f4.JPG"
 import f5 from "../assets/f5.jpg"
 import Dish from "../assets/Dish.jpg"
 import softdrink from "../assets/Softdrink.jpg"
@@ -40,9 +40,9 @@ const GalleryPhoto = () => {
         py: 4,
       }}
     >
-      <AnimatedText 
-        variant="h4" 
-        fontWeight={700} 
+      <AnimatedText
+        variant="h4"
+        fontWeight={700}
         sx={{ ml: 2, mt: 2, textAlign: "center" }}
       >
         GALLERY
