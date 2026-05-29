@@ -21,10 +21,9 @@ const drawerWidth = 240;
 
 const navItems = [
   { label: "Home", path: "/" },
-  { label: "Properties", path: "/properties" },
   { label: "Amenities", path: "/amenities" },
   { label: "Rooms", path: "/rooms" },
-  { label: "Gallery", path: "/gallery" },
+  { label: "Gallery", path: "/galleryphoto" },
   { label: "Contact", path: "/contact" },
 ];
 
