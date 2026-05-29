@@ -13,11 +13,15 @@ import {
   Alert,
   Collapse,
   CircularProgress,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import ForgotPassword from "./ForgotPassword";
 import authApi from "../../service/authApi";
 
@@ -112,6 +116,7 @@ export default function SignIn() {
   const location = useLocation();
   const [open, setOpen] = React.useState(false);
   const [apiError, setApiError] = React.useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const successMessage = location.state?.message || "";
   const initialEmail = location.state?.email || "";
@@ -191,11 +196,11 @@ export default function SignIn() {
           </Typography>
 
           <Collapse in={Boolean(successMessage)} sx={{ width: "100%", mt: 1 }}>
-            <Alert 
-              severity="success" 
-              sx={{ 
-                borderRadius: "12px", 
-                backgroundColor: "rgba(76, 175, 80, 0.2)", 
+            <Alert
+              severity="success"
+              sx={{
+                borderRadius: "12px",
+                backgroundColor: "rgba(76, 175, 80, 0.2)",
                 color: "#c8e6c9",
                 border: "1px solid rgba(76, 175, 80, 0.4)",
                 "& .MuiAlert-icon": {
@@ -211,12 +216,12 @@ export default function SignIn() {
           </Collapse>
 
           <Collapse in={Boolean(apiError)} sx={{ width: "100%", mt: 1 }}>
-            <Alert 
-              severity="error" 
+            <Alert
+              severity="error"
               onClose={() => setApiError("")}
-              sx={{ 
-                borderRadius: "12px", 
-                backgroundColor: "rgba(211, 47, 47, 0.2)", 
+              sx={{
+                borderRadius: "12px",
+                backgroundColor: "rgba(211, 47, 47, 0.2)",
                 color: "#ffcdd2",
                 border: "1px solid rgba(211, 47, 47, 0.4)",
                 "& .MuiAlert-icon": {
@@ -248,11 +253,12 @@ export default function SignIn() {
               />
             </FormControl>
 
+
             <FormControl fullWidth margin="normal">
               <TextField
                 id="password"
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 autoComplete="current-password"
                 value={formik.values.password}
@@ -266,6 +272,28 @@ export default function SignIn() {
                   formik.touched.password &&
                   formik.errors.password
                 }
+
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+
+                      <IconButton
+                        onClick={() =>
+                          setShowPassword(!showPassword)
+                        }
+                        edge="end"
+                      >
+                        {showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+
+                    </InputAdornment>
+                  ),
+                }}
+
                 sx={textFieldStyles}
               />
             </FormControl>

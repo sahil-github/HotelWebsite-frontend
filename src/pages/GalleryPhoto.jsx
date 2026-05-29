@@ -10,7 +10,7 @@ import d2 from "../assets/d2.jpg"
 import d3 from "../assets/d3.jpg"
 import d4 from "../assets/d4.jpg"
 import f1 from "../assets/f1.jpg"
-import f2 from "../assets/f2.jpg"
+import daltadka from "../assets/daltadka.jpg"
 import f3 from "../assets/f3.jpg"
 import f4 from "../assets/f4.JPG"
 import f5 from "../assets/f5.jpg"
@@ -19,7 +19,7 @@ import softdrink from "../assets/Softdrink.jpg"
 import AnimatedText from "../Components/AnimatedText";
 
 const GalleryPhoto = () => {
-  const images = [R2, R3, R4, d1, d2, d3, d4, softdrink, Dish, f1, f3, f4, f5, f2];
+  const images = [R2, R3, R4, d1, d2, d3, d4, softdrink, Dish, f1, f3, f4, f5, daltadka];
 
   // Lazy load animation on mount
   useEffect(() => {
