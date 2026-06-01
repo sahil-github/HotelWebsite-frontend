@@ -12,11 +12,11 @@ import {
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PeopleIcon from "@mui/icons-material/People";
 import BookingCard from "./BookingCard";
-import R4 from "../../assets/R4.JPG";
-import R3 from "../../assets/R3.png";
 import AnimatedText from "../../Components/AnimatedText";
+import useGalleryImages from "../../hooks/useGalleryImages";
 
 const Booking = () => {
+  const { imageMap, loading } = useGalleryImages();
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [adults, setAdults] = useState(2);
@@ -37,7 +37,7 @@ const Booking = () => {
       size: "35 sqm",
       capacity: "2 Adults",
       price: "₹3,500",
-      image: R3,
+      image: imageMap["R3"],
       amenities: [
         "King / Twin Bed",
         "City View",
@@ -51,7 +51,7 @@ const Booking = () => {
       size: "42 sqm",
       capacity: "3 Adults",
       price: "₹4,800",
-      image: R4,
+      image: imageMap["R4"],
       amenities: ["King Bed", "Balcony", "Free Wi-Fi", "Breakfast Included"],
     },
   ];

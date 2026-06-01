@@ -1,12 +1,20 @@
 import React from "react";
-import { Box, Grid, Stack, Typography, Divider } from "@mui/material";
-import ab from "../assets/ab.JPG";
-import dish from "../assets/Dish.jpg";
-import drinks from "../assets/Softdrink.jpg";
+import { Box, Grid, Stack, Typography, Divider, CircularProgress } from "@mui/material";
 import AnimatedText from "../Components/AnimatedText";
 import { motion } from "framer-motion";
+import useGalleryImages from "../hooks/useGalleryImages";
 
 const About = () => {
+  const { imageMap, loading } = useGalleryImages();
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -46,7 +54,7 @@ const About = () => {
             <Box
               component="img"
               loading="lazy"
-              src={ab}
+              src={imageMap["ab"]}
               alt="Gulmohar Grand"
               sx={{
                 width: "100%",
@@ -132,7 +140,7 @@ const About = () => {
             <Box
               component="img"
               loading="lazy"
-              src={dish}
+              src={imageMap["Dish"]}
               alt="Delicious Dish"
               sx={{
                 width: "100%",
@@ -162,7 +170,7 @@ const About = () => {
             <Box
               component="img"
               loading="lazy"
-              src={drinks}
+              src={imageMap["Softdrink"]}
               alt="Refreshing Drinks"
               sx={{
                 width: "100%",

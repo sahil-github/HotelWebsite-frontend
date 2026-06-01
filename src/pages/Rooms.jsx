@@ -1,45 +1,52 @@
 import React from "react";
-import { Typography, Box, Grid, Container, Stack, Button, Divider } from "@mui/material";
+import { Typography, Box, Grid, Container, Divider, CircularProgress } from "@mui/material";
 import BookingCard from "./Booking/BookingCard";
-import R3 from "../assets/R3.png";
-import R4 from "../assets/R4.JPG";
-import R2 from "../assets/R2.JPG";
-import R5 from "../assets/R5.JPG";
 import EastIcon from "@mui/icons-material/East";
 import AnimatedText from "../Components/AnimatedText";
 import { motion } from "framer-motion";
+import useGalleryImages from "../hooks/useGalleryImages";
 
 const Rooms = () => {
+  const { imageMap, loading } = useGalleryImages();
+
   const rooms = [
     {
       name: "Executive Room",
       size: "42 sqm",
       capacity: "3 Adults",
       price: "₹4,800",
-      image: R4,
+      imageTitle: "R4",
     },
     {
       name: "Deluxe Room",
       size: "38 sqm",
       capacity: "2 Adults",
       price: "₹3,900",
-      image: R2,
+      imageTitle: "R2",
     },
     {
       name: "Premium Suite",
       size: "60 sqm",
       capacity: "4 Adults",
       price: "₹7,200",
-      image: R3,
+      imageTitle: "R3",
     },
     {
       name: "Premium Suite",
       size: "60 sqm",
       capacity: "4 Adults",
       price: "₹7,200",
-      image: R5,
+      imageTitle: "R5",
     },
   ];
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Container maxWidth="xl" sx={{ pt: 12, pb: 8 }}>
@@ -72,7 +79,7 @@ const Rooms = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: index * 0.1 + 0.3 }}
                 >
-                  <BookingCard room={room} />
+                  <BookingCard room={{ ...room, image: imageMap[room.imageTitle] }} />
                 </motion.div>
               </Grid>
             ))}
@@ -86,3 +93,4 @@ const Rooms = () => {
 };
 
 export default Rooms;
+
