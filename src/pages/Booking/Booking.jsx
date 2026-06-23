@@ -5,7 +5,6 @@ import {
   TextField,
   MenuItem,
   Grid,
-  Container,
   Divider,
   InputAdornment,
 } from "@mui/material";
@@ -62,20 +61,21 @@ const Booking = () => {
         width: "100%",
         minHeight: "100vh",
         backgroundColor: "#fff",
-        pt: 12,
-        pb: 8,
+        px: { xs: 2, md: 12 },
+        pb: 4,
       }}
     >
-      <Container maxWidth="lg">
-        {/* HEADER */}
-        <AnimatedText 
-          variant="h4" 
-          fontWeight={700} 
-          sx={{ ml: 2, mt: 2, textAlign: "center" }}
-        >
-          BOOK YOUR STAY
-        </AnimatedText>
-        <Divider sx={{ mb: 4 }} />
+      {/* HEADER */}
+      <AnimatedText
+        variant="h4"
+        fontWeight={700}
+        sx={{ ml: 2, mt: 2, mb: 2, textAlign: "center" }}
+      >
+        BOOK YOUR STAY
+      </AnimatedText>
+      <Divider sx={{ mb: 4 }} />
+
+      <Box sx={{ px: { xs: 2, md: 12 } }}>
         <Typography
           variant="body1"
           color="text.secondary"
@@ -187,7 +187,7 @@ const Booking = () => {
             </Grid>
           ))}
         </Grid>
-      </Container>
+      </Box>
     </Box>
   );
 };

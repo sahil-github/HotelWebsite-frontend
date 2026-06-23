@@ -31,19 +31,18 @@ const Contact = () => {
         minHeight: "100vh",
         backgroundColor: "#fff",
         px: { xs: 2, md: 12 },
-        pt: 12,
-        pb: 8,
+        pb: 4,
       }}
     >
-      <AnimatedText 
-        variant="h4" 
-        fontWeight={700} 
-        sx={{ ml: 2, mt: 2, textAlign: "center" }}
+      <AnimatedText
+        variant="h4"
+        fontWeight={700}
+        sx={{ ml: 2, mt: 2, mb: 2, textAlign: "center" }}
       >
         CONTACT US
       </AnimatedText>
 
-      <Divider sx={{ mb: 6 }} />
+      <Divider sx={{ mb: 4 }} />
 
       <Grid container spacing={4} sx={{ px: { xs: 2, md: 12 } }}>
         {/* LEFT SIDE */}
