@@ -22,23 +22,25 @@ const About = () => {
         minHeight: "100vh",
         backgroundColor: "#fff",
         px: { xs: 2, md: 12 },
-        py: 4,
+        pb: 4,
       }}
     >
-      <AnimatedText 
-        variant="h4" 
-        fontWeight={700} 
-        sx={{ ml: 2, mt: 2, textAlign: "center" }}
+      <AnimatedText
+        variant="h4"
+        fontWeight={700}
+        sx={{ ml: 2, mt: 2, mb: 2, textAlign: "center" }}
       >
         ABOUT US
       </AnimatedText>
 
       <Divider sx={{ mb: 4 }} />
 
-      <Grid container   
-          spacing={4}
-          alignItems="stretch"
-          justifyContent="center">
+      <Grid container
+        spacing={4}
+        alignItems="stretch"
+        justifyContent="center"
+        sx={{ px: { xs: 2, md: 12 } }}
+      >
         {/* 1: Image */}
         <Grid
           size={{ xs: 12, md: 6 }}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Grid, Typography, Stack, Divider } from "@mui/material";
+import { Box, Grid, Typography, Stack, Divider } from "@mui/material";
 import AmenityCard from "./AmenityCard";
 import AnimatedText from "../../Components/AnimatedText";
 import { motion } from "framer-motion";
@@ -65,52 +65,58 @@ const amenities = [
 
 const Amenities = () => {
   return (
-    <Box sx={{ pt: 12, pb: 8, backgroundColor: "#f9f9f9" }}>
-      <Container maxWidth="xl">
-        <AnimatedText
-          variant="h4"
-          fontWeight={700}
-          sx={{ ml: 2, mt: 2, mb: 2, textAlign: "center" }}
-        >
-          AMENITIES
-        </AnimatedText>
+    <Box
+      sx={{
+        width: "100%",
+        minHeight: "100vh",
+        backgroundColor: "#f9f9f9",
+        px: { xs: 2, md: 12 },
+        pb: 4,
+      }}
+    >
+      <AnimatedText
+        variant="h4"
+        fontWeight={700}
+        sx={{ ml: 2, mt: 2, mb: 2, textAlign: "center" }}
+      >
+        AMENITIES
+      </AnimatedText>
 
-        <Divider sx={{ mb: 6 }} />
+      <Divider sx={{ mb: 4 }} />
 
-        <Box
-          sx={{
-            mb: 8,
-            py: 2,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center"
-          }}
-        >
-
-          <Grid container spacing={4} justifyContent="center">
-            {amenities.map((item, index) => (
-              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    duration: 0.5,
-                    delay: 0.1 * (index % 3) + 0.3 // Staggered by row-ish
-                  }}
-                >
-                  <AmenityCard
-                    icon={item.icon}
-                    title={item.title}
-                    desc={item.desc}
-                  />
-                </motion.div>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-      </Container>
+      <Box
+        sx={{
+          mb: 8,
+          py: 2,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+          px: { xs: 2, md: 12 }
+        }}
+      >
+        <Grid container spacing={4} justifyContent="center">
+          {amenities.map((item, index) => (
+            <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.1 * (index % 3) + 0.3 // Staggered by row-ish
+                }}
+              >
+                <AmenityCard
+                  icon={item.icon}
+                  title={item.title}
+                  desc={item.desc}
+                />
+              </motion.div>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
     </Box>
   );
 };

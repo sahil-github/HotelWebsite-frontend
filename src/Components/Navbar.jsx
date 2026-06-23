@@ -12,13 +12,23 @@ import {
   ListItemText,
   Toolbar,
   Button,
-  Avatar, Menu, MenuItem
+  Avatar,
+  Menu,
+  MenuItem,
+  Divider,
+  Typography,
 } from "@mui/material";
-import Search from "./Search";
 import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import Logo from "../assets/GULMOHARLOGO.png";
+import { motion, AnimatePresence } from "framer-motion";
 
-const drawerWidth = 240;
+const drawerWidth = 280;
+const GOLD = "#C8A96B";
+const GOLD_DARK = "#a8893e";
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -35,90 +45,174 @@ export default function Navbar(props) {
   const location = useLocation();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  // OPTIMIZED scroll listener with state bailout check and passive listener
+  const isHome = location.pathname === "/";
+
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = document.documentElement.scrollTop > 20;
+      const isScrolled = document.documentElement.scrollTop > 30;
       setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
     };
-
     document.addEventListener("scroll", handleScroll, { passive: true });
     return () => document.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen((prev) => !prev);
-  };
+  // Close drawer on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
+  const handleDrawerToggle = () => setMobileOpen((prev) => !prev);
+
+  // Decide navbar appearance
+  // On home: transparent → frosted dark on scroll
+  // On other pages: always frosted white (since bg is white/light)
+  const navBg = isHome
+    ? scrolled
+      ? "rgba(10, 10, 10, 0.88)"
+      : "transparent"
+    : scrolled
+      ? "rgba(255, 255, 255, 0.92)"
+      : "rgba(255, 255, 255, 0.75)";
+
+  const navBorderBottom = isHome
+    ? scrolled
+      ? `1px solid rgba(200, 169, 107, 0.2)`
+      : "none"
+    : `1px solid rgba(0,0,0,0.07)`;
+
+  const backdropFilter = (isHome && !scrolled) ? "none" : "blur(18px) saturate(180%)";
+
+  const linkColor = isHome ? "#fff" : scrolled ? "#1a1a1a" : "#1a1a1a";
+  const linkActiveColor = GOLD;
+
+  // Mobile Drawer
   const drawer = (
     <Box
       sx={{
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "rgba(255, 255, 255, 0.95)",
-        backdropFilter: "blur(5px)",
-        p: 2,
+        background: "linear-gradient(160deg, #0a0a0a 0%, #1a1509 100%)",
+        p: 0,
+        overflowX: "hidden",
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <img
-          src={Logo}
-          alt="Gulmohar Logo"
-          style={{ height: "200px", width: "auto", objectFit: "contain" }}
-        />
+      {/* Drawer Header */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          px: 3,
+          pt: 3,
+          pb: 2,
+          borderBottom: "1px solid rgba(200,169,107,0.15)",
+        }}
+      >
+        <NavLink to="/" style={{ display: "flex", alignItems: "center" }}>
+          <img
+            src={Logo}
+            alt="Gulmohar Logo"
+            style={{ height: "48px", width: "auto", objectFit: "contain" }}
+          />
+        </NavLink>
+        <IconButton
+          onClick={handleDrawerToggle}
+          sx={{
+            color: "rgba(255,255,255,0.7)",
+            "&:hover": { color: "#fff", backgroundColor: "rgba(255,255,255,0.08)" },
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
       </Box>
 
-      <List sx={{ mb: 4, flexGrow: 1 }}>
-        {navItems.map((item) => (
-          <ListItem key={item.label} disablePadding sx={{ mb: 2 }}>
-            <ListItemButton
-              component={NavLink}
-              to={item.path}
-              onClick={handleDrawerToggle}
-              sx={{
-                borderRadius: "12px",
-                // FIX 2: NavLink adds "active" class automatically, this works correctly
-                "&.active": {
-                  backgroundColor: "rgba(0,0,0,0.08)",
-                  color: "#C8A96B",
-                },
-              }}
-            >
-              <ListItemText
-                primary={item.label}
-                primaryTypographyProps={{
-                  fontSize: "1.1rem",
-                  fontWeight: 500,
-                  letterSpacing: "0.05em",
+      {/* Nav Links */}
+      <List sx={{ flex: 1, px: 2, py: 3 }}>
+        {navItems.map((item, index) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <ListItem key={item.label} disablePadding sx={{ mb: 0.5 }}>
+              <ListItemButton
+                component={NavLink}
+                to={item.path}
+                onClick={handleDrawerToggle}
+                sx={{
+                  borderRadius: "12px",
+                  px: 2.5,
+                  py: 1.4,
+                  position: "relative",
+                  overflow: "hidden",
+                  backgroundColor: isActive
+                    ? "rgba(200,169,107,0.12)"
+                    : "transparent",
+                  border: isActive
+                    ? "1px solid rgba(200,169,107,0.25)"
+                    : "1px solid transparent",
+                  transition: "all 0.25s ease",
+                  "&:hover": {
+                    backgroundColor: "rgba(200,169,107,0.08)",
+                    border: "1px solid rgba(200,169,107,0.15)",
+                  },
                 }}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
+              >
+                {isActive && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      left: 0,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      width: "3px",
+                      height: "60%",
+                      borderRadius: "0 4px 4px 0",
+                      backgroundColor: GOLD,
+                    }}
+                  />
+                )}
+                <ListItemText
+                  primary={item.label}
+                  primaryTypographyProps={{
+                    fontSize: "1rem",
+                    fontWeight: isActive ? 700 : 500,
+                    letterSpacing: "0.04em",
+                    color: isActive ? GOLD : "rgba(255,255,255,0.85)",
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
       </List>
 
-      {/* FIX 3: mt:"auto" only works when parent is flexDirection:"column" — fixed above */}
-      <Box sx={{ mt: "auto" }}>
-        {/* FIX 4: Book Now button now navigates to /contact */}
+      {/* Divider */}
+      <Box sx={{ px: 3, mb: 2 }}>
+        <Divider sx={{ borderColor: "rgba(200,169,107,0.15)" }} />
+      </Box>
+
+      {/* Book Now CTA */}
+      <Box sx={{ px: 3, pb: 4 }}>
         <Button
           fullWidth
           variant="contained"
           component={NavLink}
-          to="/contact"
+          to="/booking"
           onClick={handleDrawerToggle}
           sx={{
-            backgroundColor: "#fff",
-            color: "#000",
-            borderRadius: "999px",
-            py: 1.8,
-            fontSize: "0.9rem",
-            fontWeight: 600,
-            letterSpacing: "0.1em",
+            background: `linear-gradient(135deg, ${GOLD} 0%, ${GOLD_DARK} 100%)`,
+            color: "#fff",
+            borderRadius: "12px",
+            py: 1.6,
+            fontSize: "0.95rem",
+            fontWeight: 700,
+            letterSpacing: "0.08em",
             textTransform: "uppercase",
-            boxShadow: "0 10px 20px rgba(0,0,0,0.15)",
+            boxShadow: `0 8px 24px rgba(200,169,107,0.35)`,
+            transition: "all 0.3s ease",
             "&:hover": {
-              backgroundColor: "#333",
+              background: `linear-gradient(135deg, ${GOLD_DARK} 0%, ${GOLD} 100%)`,
+              transform: "translateY(-1px)",
+              boxShadow: `0 12px 30px rgba(200,169,107,0.45)`,
             },
           }}
         >
@@ -137,37 +231,44 @@ export default function Navbar(props) {
         position="fixed"
         elevation={0}
         sx={{
-          backgroundColor: scrolled ? "#000" : "transparent",
-          backdropFilter: scrolled ? "blur(12px)" : "none",
-          boxShadow: scrolled ? "0 4px 30px rgba(0, 0, 0, 0.08)" : "none",
-          borderBottom: scrolled ? "1px solid rgba(0, 0, 0, 0.05)" : "none",
-          transition: "background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+          backgroundColor: navBg,
+          backdropFilter: backdropFilter,
+          WebkitBackdropFilter: backdropFilter,
+          boxShadow: scrolled
+            ? "0 4px 24px rgba(0,0,0,0.08)"
+            : "none",
+          borderBottom: navBorderBottom,
+          transition:
+            "background-color 0.45s cubic-bezier(0.4,0,0.2,1), box-shadow 0.45s cubic-bezier(0.4,0,0.2,1), border-bottom 0.45s cubic-bezier(0.4,0,0.2,1)",
           width: "100%",
+          zIndex: 1200,
         }}
       >
         <Toolbar
           sx={{
             display: "flex",
             alignItems: "center",
-            px: { xs: 2, md: 4 },
-            py: scrolled ? 0.8 : 1.8,
-            transition: "padding-top 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding-bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-            willChange: "padding-top, padding-bottom",
+            px: { xs: 2, sm: 3, md: 5 },
+            py: 0,
+            minHeight: { xs: "64px", md: scrolled ? "64px" : "80px" },
+            transition: "min-height 0.35s cubic-bezier(0.4,0,0.2,1)",
           }}
         >
           {/* LEFT — Logo */}
           <Box sx={{ flex: 1, display: "flex", alignItems: "center" }}>
-            <NavLink to="/" style={{ display: "flex", alignItems: "center" }}>
+            <NavLink
+              to="/"
+              style={{ display: "flex", alignItems: "center", textDecoration: "none" }}
+            >
               <img
                 src={Logo}
                 alt="Gulmohar Logo"
                 style={{
-                  height: scrolled ? "40px" : "50px",
+                  height: scrolled ? "40px" : "52px",
                   width: "auto",
                   display: "block",
                   objectFit: "contain",
-                  transition: "height 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-                  willChange: "height",
+                  transition: "height 0.35s cubic-bezier(0.4,0,0.2,1)",
                 }}
               />
             </NavLink>
@@ -176,119 +277,207 @@ export default function Navbar(props) {
           {/* CENTER — Desktop Nav Links */}
           <Box
             sx={{
-              display: { xs: "none", sm: "flex" },
-              gap: { sm: 1, md: 2 },
+              display: { xs: "none", md: "flex" },
+              gap: 0.5,
               alignItems: "center",
             }}
           >
-            {navItems.map((item) => (
-              <Button
-                key={item.label}
-                component={NavLink}
-                to={item.path}
-                sx={({ palette }) => ({
-                  color:
-                    location.pathname === item.path
-                      ? "#C8A96B"
-                      : scrolled
-                        ? "#fff"
-                        : "#fff",
-                  fontSize: "0.95rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.05em",
-                  textTransform: "none",
-                  px: 2,
-                  py: 0.8,
-                  borderRadius: "999px",
-                  transition: "color 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  backgroundColor:
-                    location.pathname === item.path
-                      ? scrolled
-                        ? "rgba(200, 169, 107, 0.1)"
-                        : "rgba(255, 255, 255, 0.15)"
-                      : "transparent",
-                  "&:hover": {
-                    backgroundColor: scrolled
-                      ? "rgba(200, 169, 107, 0.08)"
-                      : "rgba(255, 255, 255, 0.1)",
-                    color: "#C8A96B",
-                  },
-                })}
-              >
-                {item.label}
-              </Button>
-            ))}
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <Box
+                  key={item.label}
+                  sx={{ position: "relative", display: "flex", alignItems: "center" }}
+                >
+                  <Button
+                    component={NavLink}
+                    to={item.path}
+                    sx={{
+                      color: isActive ? linkActiveColor : linkColor,
+                      fontSize: "0.9rem",
+                      fontWeight: isActive ? 700 : 500,
+                      letterSpacing: "0.04em",
+                      textTransform: "none",
+                      px: 1.8,
+                      py: 1,
+                      borderRadius: "8px",
+                      position: "relative",
+                      transition: "color 0.3s ease, background-color 0.3s ease",
+                      backgroundColor: isActive
+                        ? "rgba(200,169,107,0.1)"
+                        : "transparent",
+                      "&:hover": {
+                        color: linkActiveColor,
+                        backgroundColor: isHome
+                          ? "rgba(200,169,107,0.12)"
+                          : "rgba(200,169,107,0.08)",
+                      },
+                    }}
+                  >
+                    {item.label}
+                    {/* Active underline indicator */}
+                    {isActive && (
+                      <Box
+                        component={motion.div}
+                        layoutId="nav-indicator"
+                        sx={{
+                          position: "absolute",
+                          bottom: "4px",
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: "20px",
+                          height: "2px",
+                          borderRadius: "2px",
+                          backgroundColor: GOLD,
+                        }}
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                  </Button>
+                </Box>
+              );
+            })}
           </Box>
 
           {/* RIGHT — Actions */}
           <Box
             sx={{
+              flex: 1,
               display: "flex",
               alignItems: "center",
-              gap: { xs: 1, md: 2 },
-              flex: 1,
+              gap: 1,
               justifyContent: "flex-end",
             }}
           >
-            {/* <Search /> */}
+            {/* Book Now CTA — desktop only */}
             <Button
-              variant="outlined"
               component={NavLink}
-              to="/contact"
+              to="/booking"
               sx={{
-                borderColor: scrolled ? "#1a1a1a" : "#C8A96B",
-                color: scrolled ? "#1a1a1a" : "#C8A96B",
-                borderRadius: "999px",
-                px: 2.5,
-                py: 0.8,
-                fontSize: "0.75rem",
-                fontWeight: 700,
-                letterSpacing: "0.05em",
-                textTransform: "none",
                 display: { xs: "none", md: "inline-flex" },
-                transition: "background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s ease",
+                background: `linear-gradient(135deg, ${GOLD} 0%, ${GOLD_DARK} 100%)`,
+                color: "#fff",
+                borderRadius: "8px",
+                px: 2.5,
+                py: 0.9,
+                fontSize: "0.82rem",
+                fontWeight: 700,
+                letterSpacing: "0.06em",
+                textTransform: "none",
+                boxShadow: `0 4px 14px rgba(200,169,107,0.35)`,
+                transition: "all 0.3s ease",
                 "&:hover": {
-                  backgroundColor: scrolled ? "#1a1a1a" : "#C8A96B",
-                  borderColor: scrolled ? "#1a1a1a" : "#C8A96B",
-                  color: scrolled ? "#fff" : "#000",
-                  transform: "scale(1.05)",
+                  background: `linear-gradient(135deg, ${GOLD_DARK} 0%, ${GOLD} 100%)`,
+                  transform: "translateY(-1px)",
+                  boxShadow: `0 6px 20px rgba(200,169,107,0.45)`,
                 },
               }}
             >
-              Get Started
+              Book Now
             </Button>
 
-
+            {/* Avatar / Profile dropdown */}
             <IconButton
-              onClick={handleDrawerToggle}
-              sx={{
-                display: { sm: "none" },
-                color: scrolled ? "#1a1a1a" : "#fff",
-                transition: "color 0.4s ease",
-              }}
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+              sx={{ p: 0.5, ml: 0.5 }}
             >
-              <MenuIcon />
-            </IconButton>
-
-            <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-              <Avatar>S</Avatar>
+              <Avatar
+                sx={{
+                  width: 36,
+                  height: 36,
+                  background: `linear-gradient(135deg, ${GOLD} 0%, ${GOLD_DARK} 100%)`,
+                  fontSize: "0.9rem",
+                  fontWeight: 700,
+                  color: "#fff",
+                  boxShadow: `0 2px 10px rgba(200,169,107,0.4)`,
+                  transition: "box-shadow 0.3s ease",
+                  "&:hover": {
+                    boxShadow: `0 4px 16px rgba(200,169,107,0.55)`,
+                  },
+                }}
+              >
+                G
+              </Avatar>
             </IconButton>
 
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
               onClose={() => setAnchorEl(null)}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  mt: 1,
+                  borderRadius: "12px",
+                  minWidth: 180,
+                  border: "1px solid rgba(0,0,0,0.06)",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
+                  overflow: "hidden",
+                  "& .MuiMenuItem-root": {
+                    px: 2,
+                    py: 1.3,
+                    fontSize: "0.9rem",
+                    fontWeight: 500,
+                    gap: 1.5,
+                    transition: "background-color 0.2s ease",
+                    "&:hover": {
+                      backgroundColor: "rgba(200,169,107,0.08)",
+                      color: GOLD,
+                    },
+                  },
+                },
+              }}
             >
-
-
+              <Box sx={{ px: 2, py: 1.5, borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
+                <Typography variant="caption" color="text.secondary" fontWeight={600} letterSpacing="0.05em">
+                  ACCOUNT
+                </Typography>
+              </Box>
               <MenuItem
                 component={NavLink}
                 to="/profile"
                 onClick={() => setAnchorEl(null)}
-              >My Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Logout</MenuItem>
+              >
+                <PersonOutlineIcon fontSize="small" />
+                My Profile
+              </MenuItem>
+              <MenuItem onClick={() => setAnchorEl(null)}>
+                <SettingsOutlinedIcon fontSize="small" />
+                Settings
+              </MenuItem>
+              <Divider sx={{ my: 0.5 }} />
+              <MenuItem
+                onClick={() => setAnchorEl(null)}
+                sx={{ color: "#e53935 !important", "&:hover": { backgroundColor: "rgba(229,57,53,0.06) !important" } }}
+              >
+                <LogoutIcon fontSize="small" />
+                Logout
+              </MenuItem>
             </Menu>
+
+            {/* Mobile Hamburger */}
+            <IconButton
+              onClick={handleDrawerToggle}
+              sx={{
+                display: { md: "none" },
+                color: isHome ? "#fff" : "#1a1a1a",
+                ml: 0.5,
+                borderRadius: "10px",
+                backgroundColor: isHome
+                  ? "rgba(255,255,255,0.1)"
+                  : "rgba(0,0,0,0.05)",
+                "&:hover": {
+                  backgroundColor: isHome
+                    ? "rgba(255,255,255,0.18)"
+                    : "rgba(0,0,0,0.1)",
+                },
+                transition: "all 0.3s ease",
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
@@ -297,13 +486,20 @@ export default function Navbar(props) {
       <Drawer
         container={container}
         variant="temporary"
+        anchor="right"
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{ keepMounted: true }}
         sx={{
-          display: { xs: "block", sm: "none" },
+          display: { xs: "block", md: "none" },
           "& .MuiDrawer-paper": {
             width: drawerWidth,
+            boxSizing: "border-box",
+            border: "none",
+          },
+          "& .MuiBackdrop-root": {
+            backdropFilter: "blur(4px)",
+            backgroundColor: "rgba(0,0,0,0.4)",
           },
         }}
       >

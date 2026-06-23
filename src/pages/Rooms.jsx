@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box, Grid, Container, Divider, CircularProgress } from "@mui/material";
+import { Typography, Box, Grid, Divider, CircularProgress } from "@mui/material";
 import BookingCard from "./Booking/BookingCard";
 import EastIcon from "@mui/icons-material/East";
 import AnimatedText from "../Components/AnimatedText";
@@ -49,16 +49,24 @@ const Rooms = () => {
   }
 
   return (
-    <Container maxWidth="xl" sx={{ pt: 12, pb: 8 }}>
+    <Box
+      sx={{
+        width: "100%",
+        minHeight: "100vh",
+        backgroundColor: "#fff",
+        px: { xs: 2, md: 12 },
+        pb: 4,
+      }}
+    >
       <AnimatedText
         variant="h4"
         fontWeight={700}
-        sx={{ ml: 2, mt: 2, textAlign: "center" }}
+        sx={{ ml: 2, mt: 2, mb: 2, textAlign: "center" }}
       >
         ROOMS
       </AnimatedText>
 
-      <Divider sx={{ mb: 6 }} />
+      <Divider sx={{ mb: 4 }} />
 
       <Box
         sx={{
@@ -66,10 +74,11 @@ const Rooms = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          textAlign: "center"
+          textAlign: "center",
+          px: { xs: 2, md: 12 }
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", width: "100%" }}>
           <Grid container spacing={4} justifyContent="center">
             {rooms.map((room, index) => (
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
@@ -85,12 +94,9 @@ const Rooms = () => {
             ))}
           </Grid>
         </Box>
-
       </Box>
-
-    </Container>
+    </Box>
   );
 };
 
 export default Rooms;
-

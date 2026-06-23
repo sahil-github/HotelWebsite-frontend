@@ -43,55 +43,57 @@ const GalleryPhoto = () => {
         minHeight: "100vh",
         backgroundColor: "#fff",
         px: { xs: 2, md: 12 },
-        py: 4,
+        pb: 4,
       }}
     >
       <AnimatedText
         variant="h4"
         fontWeight={700}
-        sx={{ ml: 2, mt: 2, textAlign: "center" }}
+        sx={{ ml: 2, mt: 2, mb: 2, textAlign: "center" }}
       >
         GALLERY
       </AnimatedText>
-      <Divider sx={{ mb: 6 }} />
+      <Divider sx={{ mb: 4 }} />
 
-      {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
-          <CircularProgress />
-        </Box>
-      ) : error ? (
-        <Typography color="error" textAlign="center" mt={5}>
-          {error}
-        </Typography>
-      ) : images.length === 0 ? (
-        <Typography textAlign="center" mt={5} color="textSecondary">
-          No images uploaded to the gallery yet.
-        </Typography>
-      ) : (
-        <Grid container spacing={3} justifyContent="center" >
-          {images.map((img, index) => (
-            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={img._id || index}>
-              <Box
-                component="img"
-                // Prepend backend URL to the relative imageUrl provided by DB
-                src={`${backendUrl}${img.imageUrl}`}
-                loading="lazy"
-                alt={img.title || `Gallery image ${index}`}
-                className="room-img"
-                sx={{
-                  width: "100%",
-                  height: { xs: 220, md: 260 },
-                  objectFit: "cover",
-                  borderRadius: 2,
-                  boxShadow: "0 10px 25px rgba(0,0,0,0.12)",
-                  transition: "transform 0.4s ease, opacity 0.6s ease",
-                  "&:hover": { transform: "scale(1.03)" },
-                }}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      )}
+      <Box sx={{ px: { xs: 2, md: 12 } }}>
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
+            <CircularProgress />
+          </Box>
+        ) : error ? (
+          <Typography color="error" textAlign="center" mt={5}>
+            {error}
+          </Typography>
+        ) : images.length === 0 ? (
+          <Typography textAlign="center" mt={5} color="textSecondary">
+            No images uploaded to the gallery yet.
+          </Typography>
+        ) : (
+          <Grid container spacing={3} justifyContent="center" >
+            {images.map((img, index) => (
+              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={img._id || index}>
+                <Box
+                  component="img"
+                  // Prepend backend URL to the relative imageUrl provided by DB
+                  src={`${backendUrl}${img.imageUrl}`}
+                  loading="lazy"
+                  alt={img.title || `Gallery image ${index}`}
+                  className="room-img"
+                  sx={{
+                    width: "100%",
+                    height: { xs: 220, md: 260 },
+                    objectFit: "cover",
+                    borderRadius: 2,
+                    boxShadow: "0 10px 25px rgba(0,0,0,0.12)",
+                    transition: "transform 0.4s ease, opacity 0.6s ease",
+                    "&:hover": { transform: "scale(1.03)" },
+                  }}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Box>
     </Box>
   );
 };
