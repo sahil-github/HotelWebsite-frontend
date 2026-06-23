@@ -12,9 +12,10 @@ import {
   ListItemText,
   Toolbar,
   Button,
+  Avatar, Menu, MenuItem
 } from "@mui/material";
+import Search from "./Search";
 import MenuIcon from "@mui/icons-material/Menu";
-import Profile from "./Profile";
 import Logo from "../assets/GULMOHARLOGO.png";
 
 const drawerWidth = 240;
@@ -32,6 +33,7 @@ export default function Navbar(props) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const [anchorEl, setAnchorEl] = useState(null);
 
   // OPTIMIZED scroll listener with state bailout check and passive listener
   useEffect(() => {
@@ -106,8 +108,8 @@ export default function Navbar(props) {
           to="/contact"
           onClick={handleDrawerToggle}
           sx={{
-            backgroundColor: "#000",
-            color: "#fff",
+            backgroundColor: "#fff",
+            color: "#000",
             borderRadius: "999px",
             py: 1.8,
             fontSize: "0.9rem",
@@ -135,7 +137,7 @@ export default function Navbar(props) {
         position="fixed"
         elevation={0}
         sx={{
-          backgroundColor: scrolled ? "rgba(248, 247, 244, 0.96)" : "transparent",
+          backgroundColor: scrolled ? "#000" : "transparent",
           backdropFilter: scrolled ? "blur(12px)" : "none",
           boxShadow: scrolled ? "0 4px 30px rgba(0, 0, 0, 0.08)" : "none",
           borderBottom: scrolled ? "1px solid rgba(0, 0, 0, 0.05)" : "none",
@@ -189,7 +191,7 @@ export default function Navbar(props) {
                     location.pathname === item.path
                       ? "#C8A96B"
                       : scrolled
-                        ? "#1a1a1a"
+                        ? "#fff"
                         : "#fff",
                   fontSize: "0.95rem",
                   fontWeight: 700,
@@ -228,6 +230,7 @@ export default function Navbar(props) {
               justifyContent: "flex-end",
             }}
           >
+            {/* <Search /> */}
             <Button
               variant="outlined"
               component={NavLink}
@@ -255,7 +258,6 @@ export default function Navbar(props) {
               Get Started
             </Button>
 
-            <Profile />
 
             <IconButton
               onClick={handleDrawerToggle}
@@ -267,6 +269,26 @@ export default function Navbar(props) {
             >
               <MenuIcon />
             </IconButton>
+
+            <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+              <Avatar>S</Avatar>
+            </IconButton>
+
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={() => setAnchorEl(null)}
+            >
+
+
+              <MenuItem
+                component={NavLink}
+                to="/profile"
+                onClick={() => setAnchorEl(null)}
+              >My Profile</MenuItem>
+              <MenuItem>Settings</MenuItem>
+              <MenuItem>Logout</MenuItem>
+            </Menu>
           </Box>
         </Toolbar>
       </AppBar>

@@ -10,4 +10,5 @@ export const Routes = {
   ROOMS: "/rooms",
   SignIn: "/signin",
   SignUp: "/signup",
+  Profile: "/profile"
 };

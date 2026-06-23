@@ -16,6 +16,7 @@ import Rooms from "../pages/Rooms";
 import Amenities from "../pages/Amenities/Amenities";
 import Gallery from "../pages/GalleryPhoto";
 import Booking from "../pages/Booking/Booking";
+import Profile from "../Components/Profile";
 
 export const router = createBrowserRouter([
   // =========================
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
         path: "/galleryphoto",
         element: <Gallery />,
       },
+      {
+        path: "/profile",
+        element: <Profile />
+      }
     ],
   },
 
