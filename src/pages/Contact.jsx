@@ -49,7 +49,7 @@ const Contact = () => {
         <Grid size={{ xs: 12, md: 6 }}>
           <Grid container direction="column" spacing={4}>
 
-            <Box display="flex" gap={2}>
+            <Box display="flex" gap={1}>
               <LocationOnIcon color="error" />
               <Box>
                 <Typography fontWeight={600}>ADDRESS</Typography>
@@ -59,7 +59,7 @@ const Contact = () => {
               </Box>
             </Box>
 
-            <Box display="flex" gap={2}>
+            <Box display="flex" gap={1}>
               <PhoneIcon color="error" />
               <Box>
                 <Typography fontWeight={600}>PHONE & EMAIL</Typography>
@@ -70,7 +70,7 @@ const Contact = () => {
               </Box>
             </Box>
 
-            <Box display="flex" gap={2} direction>
+            <Box display="flex" gap={1} direction>
               <AccessTimeIcon color="error" />
               <Box>
                 <Typography fontWeight={600}>WORKING TIME</Typography>
@@ -84,7 +84,7 @@ const Contact = () => {
                 title="map"
                 src="https://maps.google.com/maps?hl=en&q=gulmohar%20grand%20nagpur&z=14&output=embed"
                 width="100%"
-                height="250"
+                height="200"
                 style={{ border: 0, borderRadius: 8 }}
                 loading="lazy"
               />
@@ -94,6 +94,7 @@ const Contact = () => {
 
         {/* RIGHT FORM */}
         <Grid size={{ xs: 12, md: 6 }}>
+
 
           <Formik
             initialValues={{
@@ -125,7 +126,7 @@ const Contact = () => {
               handleSubmit,
             }) => (
               <form onSubmit={handleSubmit} noValidate>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} border={1} borderColor="#f5f5f5" borderRadius={2} p={2} >
                   <Grid size={{ xs: 12, md: 6 }}>
                     <Box
                       sx={{ display: "flex", flexDirection: "column", gap: 2 }}
