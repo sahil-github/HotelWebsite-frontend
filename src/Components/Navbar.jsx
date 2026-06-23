@@ -54,7 +54,7 @@ export default function Navbar(props) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setAnchorEl(null);
-    navigate("/signin");
+    navigate("/home");
   };
 
   useEffect(() => {

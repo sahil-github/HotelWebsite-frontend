@@ -9,16 +9,20 @@ import {
 import StraightenIcon from "@mui/icons-material/Straighten";
 import GroupIcon from "@mui/icons-material/Group";
 
-const BookingCard = ({ room }) => {
+const BookingCard = ({ room, selected, onClick }) => {
   return (
     <Card
+      onClick={onClick}
       sx={{
         width: "100%",
         height: 300,
-        borderRadius: 0,
+        borderRadius: 2,
         position: "relative",
         overflow: "hidden",
         cursor: "pointer",
+        border: selected ? "3px solid #b8924c" : "3px solid transparent",
+        boxShadow: selected ? "0 8px 24px rgba(184, 146, 76, 0.25)" : "0 4px 12px rgba(0,0,0,0.05)",
+        transition: "all 0.3s ease",
         "&:hover .room-image": {
           transform: "scale(1.05)",
         },
@@ -27,6 +31,28 @@ const BookingCard = ({ room }) => {
         },
       }}
     >
+      {/* SELECTED BADGE */}
+      {selected && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 16,
+            right: 16,
+            backgroundColor: "#b8924c",
+            color: "#fff",
+            px: 1.5,
+            py: 0.5,
+            borderRadius: 1,
+            zIndex: 10,
+            fontSize: "0.75rem",
+            fontWeight: 600,
+            letterSpacing: "0.05em",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+          }}
+        >
+          SELECTED
+        </Box>
+      )}
       {/* IMAGE */}
       <CardMedia
         component="img"
