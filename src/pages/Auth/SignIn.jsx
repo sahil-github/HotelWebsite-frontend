@@ -118,8 +118,6 @@ export default function SignIn() {
   const [open, setOpen] = React.useState(false);
   const [apiError, setApiError] = React.useState("");
   const [showPassword, setShowPassword] = useState(false);
-  cd
-
   const successMessage = location.state?.message || "";
   const initialEmail = location.state?.email || "";
 
@@ -143,7 +141,7 @@ export default function SignIn() {
         if (response.data && response.data.token) {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
-          navigate("/");
+          navigate("/booking");
         } else {
           setApiError("Login failed. No token returned.");
         }

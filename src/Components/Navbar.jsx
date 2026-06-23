@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -26,6 +26,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import Logo from "../assets/GULMOHARLOGO.png";
 import { motion, AnimatePresence } from "framer-motion";
 
+
 const drawerWidth = 280;
 const GOLD = "#C8A96B";
 const GOLD_DARK = "#a8893e";
@@ -43,9 +44,18 @@ export default function Navbar(props) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const isHome = location.pathname === "/";
+  const isLoggedIn = Boolean(localStorage.getItem("token"));
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setAnchorEl(null);
+    navigate("/signin");
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,8 +81,8 @@ export default function Navbar(props) {
       ? "rgba(10, 10, 10, 0.88)"
       : "transparent"
     : scrolled
-      ? "rgba(255, 255, 255, 0.92)"
-      : "rgba(255, 255, 255, 0.75)";
+      ? "rgba(255, 255, 255, 0.75)"
+      : " rgba(10, 10, 10, 0.88)";
 
   const navBorderBottom = isHome
     ? scrolled
@@ -350,7 +360,7 @@ export default function Navbar(props) {
             }}
           >
             {/* Book Now CTA — desktop only */}
-            <Button
+            {/* <Button
               component={NavLink}
               to="/booking"
               sx={{
@@ -374,88 +384,92 @@ export default function Navbar(props) {
               }}
             >
               Book Now
-            </Button>
+            </Button> */}
 
-            {/* Avatar / Profile dropdown */}
-            <IconButton
-              onClick={(e) => setAnchorEl(e.currentTarget)}
-              sx={{ p: 0.5, ml: 0.5 }}
-            >
-              <Avatar
-                sx={{
-                  width: 36,
-                  height: 36,
-                  background: `linear-gradient(135deg, ${GOLD} 0%, ${GOLD_DARK} 100%)`,
-                  fontSize: "0.9rem",
-                  fontWeight: 700,
-                  color: "#fff",
-                  boxShadow: `0 2px 10px rgba(200,169,107,0.4)`,
-                  transition: "box-shadow 0.3s ease",
-                  "&:hover": {
-                    boxShadow: `0 4px 16px rgba(200,169,107,0.55)`,
-                  },
-                }}
-              >
-                G
-              </Avatar>
-            </IconButton>
+            {/* Avatar / Profile dropdown — only shown when logged in */}
+            {isLoggedIn && (
+              <>
+                <IconButton
+                  onClick={(e) => setAnchorEl(e.currentTarget)}
+                  sx={{ p: 0.5, ml: 0.5 }}
+                >
+                  <Avatar
+                    sx={{
+                      width: 36,
+                      height: 36,
+                      background: `linear-gradient(135deg, ${GOLD} 0%, ${GOLD_DARK} 100%)`,
+                      fontSize: "0.9rem",
+                      fontWeight: 700,
+                      color: "#fff",
+                      boxShadow: `0 2px 10px rgba(200,169,107,0.4)`,
+                      transition: "box-shadow 0.3s ease",
+                      "&:hover": {
+                        boxShadow: `0 4px 16px rgba(200,169,107,0.55)`,
+                      },
+                    }}
+                  >
+                    G
+                  </Avatar>
+                </IconButton>
 
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={() => setAnchorEl(null)}
-              transformOrigin={{ horizontal: "right", vertical: "top" }}
-              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-              PaperProps={{
-                elevation: 0,
-                sx: {
-                  mt: 1,
-                  borderRadius: "12px",
-                  minWidth: 180,
-                  border: "1px solid rgba(0,0,0,0.06)",
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
-                  overflow: "hidden",
-                  "& .MuiMenuItem-root": {
-                    px: 2,
-                    py: 1.3,
-                    fontSize: "0.9rem",
-                    fontWeight: 500,
-                    gap: 1.5,
-                    transition: "background-color 0.2s ease",
-                    "&:hover": {
-                      backgroundColor: "rgba(200,169,107,0.08)",
-                      color: GOLD,
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={() => setAnchorEl(null)}
+                  transformOrigin={{ horizontal: "right", vertical: "top" }}
+                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  PaperProps={{
+                    elevation: 0,
+                    sx: {
+                      mt: 1,
+                      borderRadius: "12px",
+                      minWidth: 180,
+                      border: "1px solid rgba(0,0,0,0.06)",
+                      boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
+                      overflow: "hidden",
+                      "& .MuiMenuItem-root": {
+                        px: 2,
+                        py: 1.3,
+                        fontSize: "0.9rem",
+                        fontWeight: 500,
+                        gap: 1.5,
+                        transition: "background-color 0.2s ease",
+                        "&:hover": {
+                          backgroundColor: "rgba(200,169,107,0.08)",
+                          color: GOLD,
+                        },
+                      },
                     },
-                  },
-                },
-              }}
-            >
-              <Box sx={{ px: 2, py: 1.5, borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
-                <Typography variant="caption" color="text.secondary" fontWeight={600} letterSpacing="0.05em">
-                  ACCOUNT
-                </Typography>
-              </Box>
-              <MenuItem
-                component={NavLink}
-                to="/profile"
-                onClick={() => setAnchorEl(null)}
-              >
-                <PersonOutlineIcon fontSize="small" />
-                My Profile
-              </MenuItem>
-              <MenuItem onClick={() => setAnchorEl(null)}>
-                <SettingsOutlinedIcon fontSize="small" />
-                Settings
-              </MenuItem>
-              <Divider sx={{ my: 0.5 }} />
-              <MenuItem
-                onClick={() => setAnchorEl(null)}
-                sx={{ color: "#e53935 !important", "&:hover": { backgroundColor: "rgba(229,57,53,0.06) !important" } }}
-              >
-                <LogoutIcon fontSize="small" />
-                Logout
-              </MenuItem>
-            </Menu>
+                  }}
+                >
+                  <Box sx={{ px: 2, py: 1.5, borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
+                    <Typography variant="caption" color="text.secondary" fontWeight={600} letterSpacing="0.05em">
+                      ACCOUNT
+                    </Typography>
+                  </Box>
+                  <MenuItem
+                    component={NavLink}
+                    to="/profile"
+                    onClick={() => setAnchorEl(null)}
+                  >
+                    <PersonOutlineIcon fontSize="small" />
+                    My Profile
+                  </MenuItem>
+                  <MenuItem onClick={() => setAnchorEl(null)}>
+                    <SettingsOutlinedIcon fontSize="small" />
+                    Settings
+                  </MenuItem>
+                  <Divider sx={{ my: 0.5 }} />
+                  <MenuItem
+                    onClick={handleLogout}
+                    sx={{ color: "#e53935 !important", "&:hover": { backgroundColor: "rgba(229,57,53,0.06) !important" } }}
+                  >
+                    <LogoutIcon fontSize="small" />
+                    Logout
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
 
             {/* Mobile Hamburger */}
             <IconButton
